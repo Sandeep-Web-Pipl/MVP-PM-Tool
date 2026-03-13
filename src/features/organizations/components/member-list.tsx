@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     DropdownMenu,
@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import { useTransition } from 'react';
 import { MemberWithProfile } from '@/types/features';
 import { UserRole } from '@/types';
+import { cn } from '@/lib/utils';
 
 interface MemberListProps {
     organizationId: string;
@@ -40,7 +41,7 @@ const roleColors: Record<string, string> = {
 };
 
 export function MemberList({ organizationId, members, currentUserId, currentUserRole }: MemberListProps) {
-    const [isPending, startTransition] = useTransition();
+    const [, startTransition] = useTransition();
     const canManageMembers = currentUserRole === 'owner' || currentUserRole === 'admin';
 
     async function handleRoleChange(memberId: string, newRole: UserRole) {
@@ -100,15 +101,8 @@ export function MemberList({ organizationId, members, currentUserId, currentUser
 
                             {canManageMembers && member.profiles?.id !== currentUserId && member.role !== 'owner' && (
                                 <DropdownMenu>
-                                    <DropdownMenuTrigger>
-                                        <Button 
-                                            variant="ghost" 
-                                            size="icon" 
-                                            className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                                            disabled={isPending}
-                                        >
-                                            <MoreHorizontal className="h-4 w-4" />
-                                        </Button>
+                                    <DropdownMenuTrigger className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity")}>
+                                        <MoreHorizontal className="h-4 w-4" />
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-48">
                                         <DropdownMenuLabel>Manage Member</DropdownMenuLabel>

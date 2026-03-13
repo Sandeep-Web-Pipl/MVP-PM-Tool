@@ -11,14 +11,21 @@ export default async function DashboardLayout({
     children: React.ReactNode;
 }) {
     const supabase = await createClient();
-    const context = await getCurrentOrganization(supabase);
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        redirect('/login');
+    }
+
+    const [context, notifications] = await Promise.all([
+        getCurrentOrganization(supabase),
+        getAllNotifications(supabase, user.id)
+    ]);
 
     // If no organization found, redirect to onboarding
     if (!context?.organization) {
         redirect('/onboarding');
     }
-
-    const notifications = await getAllNotifications(supabase, context.user.id);
 
     return (
         <div className="flex min-h-screen bg-slate-50/50">

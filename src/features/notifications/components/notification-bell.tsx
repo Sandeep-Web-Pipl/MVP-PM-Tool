@@ -7,9 +7,10 @@ import {
     MessageSquare,
     FileText,
     AlertCircle,
-    CheckCheck
+    CheckCheck,
+    MoreHorizontal
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
     Popover,
     PopoverContent,
@@ -22,6 +23,12 @@ import { markNotificationAsReadAction, markAllAsReadAction } from '../actions';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 import { Notification } from '@/types/features';
 
@@ -65,18 +72,16 @@ export function NotificationBell({ initialNotifications }: NotificationBellProps
 
     return (
         <Popover>
-            <PopoverTrigger>
-                <Button variant="ghost" size="icon" className="relative h-9 w-9">
-                    <Bell className="h-5 w-5" />
-                    {unreadCount > 0 && (
-                        <Badge
-                            className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-destructive text-destructive-foreground border-2 border-background"
-                            variant="destructive"
-                        >
-                            {unreadCount > 9 ? '9+' : unreadCount}
-                        </Badge>
-                    )}
-                </Button>
+            <PopoverTrigger className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "relative h-9 w-9")}>
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                    <Badge
+                        className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-destructive text-destructive-foreground border-2 border-background"
+                        variant="destructive"
+                    >
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                    </Badge>
+                )}
             </PopoverTrigger>
             <PopoverContent className="w-80 p-0 shadow-xl" align="end">
                 <div className="flex items-center justify-between p-4 border-b">

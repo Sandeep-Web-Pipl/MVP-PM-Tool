@@ -1,16 +1,28 @@
 'use client';
 
-import { 
-    Popover, 
-    PopoverContent, 
-    PopoverTrigger 
-} from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { Bell } from 'lucide-react';
-import { NotificationList } from './notification-list';
-import { useTransition } from 'react';
-import { markAllAsReadAction } from '../actions';
+import { useState, useTransition } from 'react';
+import {
+    Bell,
+    Circle,
+    MessageSquare,
+    FileText,
+    AlertCircle,
+    CheckCheck,
+} from 'lucide-react';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { formatDistanceToNow } from 'date-fns';
+import { markNotificationAsReadAction, markAllAsReadAction } from '../actions';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { NotificationList } from './notification-list';
 
 import { Notification } from '@/types/features';
 
@@ -35,15 +47,13 @@ export function NotificationPopover({ notifications, unreadCount }: Notification
 
     return (
         <Popover>
-            <PopoverTrigger>
-                <Button variant="ghost" size="icon" className="relative">
-                    <Bell className="h-5 w-5" />
-                    {unreadCount > 0 && (
-                        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white ring-2 ring-background animate-in fade-in zoom-in">
-                            {unreadCount > 9 ? '9+' : unreadCount}
-                        </span>
-                    )}
-                </Button>
+            <PopoverTrigger className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "relative")}>
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white ring-2 ring-background animate-in fade-in zoom-in">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                )}
             </PopoverTrigger>
             <PopoverContent className="w-[350px] p-0 shadow-2xl" align="end">
                 <div className="flex items-center justify-between p-4 border-b">

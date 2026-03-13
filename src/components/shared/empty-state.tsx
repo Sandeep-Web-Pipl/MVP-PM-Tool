@@ -21,14 +21,14 @@ export function EmptyState({
     onAction,
     actionHref,
 }: EmptyStateProps) {
-    const ActionButton = () => (
+    const actionButton = (
         <Button 
             onClick={onAction}
             className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-100"
         >
             {actionLabel}
         </Button>
-    )
+    );
 
     return (
         <div className="flex flex-col items-center justify-center p-8 text-center bg-white/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-slate-200 min-h-[300px] animate-in fade-in zoom-in duration-300">
@@ -41,10 +41,10 @@ export function EmptyState({
                 <>
                     {actionHref ? (
                         <Link href={actionHref}>
-                            <ActionButton />
+                            {actionButton}
                         </Link>
                     ) : onAction ? (
-                        <ActionButton />
+                        actionButton
                     ) : null}
                 </>
             )}
