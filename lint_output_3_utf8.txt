@@ -1,0 +1,70 @@
+﻿
+> mvp-pm-tool@0.1.0 lint
+> eslint
+
+
+C:\MERN\mvp-pm-tool\src\features\activity\components\activity-timeline.tsx
+  43:40  warning  'idx' is defined but never used           @typescript-eslint/no-unused-vars
+  63:88  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:52  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  72:66  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\attachments\components\attachment-upload.tsx
+  3:10  warning  'useState' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\features\dashboard\components\recent-activity-widget.tsx
+  7:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\dashboard\components\upcoming-tasks.tsx
+  4:10  warning  'CalendarIcon' is defined but never used  @typescript-eslint/no-unused-vars
+  9:12  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\notifications\components\notification-bell.tsx
+  27:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\notifications\components\notification-list.tsx
+   7:10  warning  'Button' is defined but never used        @typescript-eslint/no-unused-vars
+  13:5   warning  'Trash2' is defined but never used        @typescript-eslint/no-unused-vars
+  18:20  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:33  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\notifications\components\notification-popover.tsx
+  16:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\projects\components\create-project-form.tsx
+  3:10  warning  'useState' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\features\projects\components\project-list.tsx
+  6:10  warning  'Tables' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\kanban-board.tsx
+   98:55  error    Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  110:15  warning  'overId' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\task-list.tsx
+  11:12  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-explicit-any
+  19:9   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\task-list.tsx:19:9
+  17 |
+  18 |     useEffect(() => {
+> 19 |         setIsMounted(true);
+     |         ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |     }, []);
+  21 |
+  22 |     const filteredTasks = tasks.filter(task =>   react-hooks/set-state-in-effect
+
+C:\MERN\mvp-pm-tool\src\lib\supabase\middleware.ts
+  18:58  warning  'options' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\lib\supabase\server.ts
+  1:35  warning  'CookieOptions' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 22 problems (12 errors, 10 warnings)
+

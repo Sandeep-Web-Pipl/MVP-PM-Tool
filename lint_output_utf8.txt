@@ -1,0 +1,114 @@
+﻿
+> mvp-pm-tool@0.1.0 lint
+> eslint
+
+
+C:\MERN\mvp-pm-tool\src\app\(dashboard)\dashboard\page.tsx
+  36:39  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  36:46  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\MERN\mvp-pm-tool\src\app\(dashboard)\projects\page.tsx
+   7:26  warning  'Users' is defined but never used                                @typescript-eslint/no-unused-vars
+  11:10  warning  'Skeleton' is defined but never used                             @typescript-eslint/no-unused-vars
+  27:59  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\MERN\mvp-pm-tool\src\app\(dashboard)\settings\components\organization-settings-form.tsx
+  46:61  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\MERN\mvp-pm-tool\src\app\(dashboard)\settings\page.tsx
+  5:10  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+  6:10  warning  'Input' is defined but never used   @typescript-eslint/no-unused-vars
+  8:26  warning  'Shield' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\app\(dashboard)\team\page.tsx
+  7:10  warning  'Skeleton' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\components\layout\header.tsx
+  24:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\activity\components\activity-timeline.tsx
+  17:17  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  20:35  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  51:40  warning  'idx' is defined but never used                                  @typescript-eslint/no-unused-vars
+  80:37  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  80:75  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\MERN\mvp-pm-tool\src\features\attachments\components\attachment-list.tsx
+  11:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\attachments\components\attachment-upload.tsx
+  3:10  warning  'useState' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\features\comments\components\comment-list.tsx
+  11:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\dashboard\components\recent-activity-widget.tsx
+  7:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\dashboard\components\upcoming-tasks.tsx
+  4:10  warning  'CalendarIcon' is defined but never used  @typescript-eslint/no-unused-vars
+  9:12  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\notifications\components\notification-bell.tsx
+  27:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\notifications\components\notification-list.tsx
+   7:10  warning  'Button' is defined but never used        @typescript-eslint/no-unused-vars
+  13:5   warning  'Trash2' is defined but never used        @typescript-eslint/no-unused-vars
+  18:20  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:33  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\notifications\components\notification-popover.tsx
+  16:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\organizations\components\member-list.tsx
+  20:45  warning  'ChevronRight' is defined but never used  @typescript-eslint/no-unused-vars
+  56:64  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\projects\components\create-project-form.tsx
+  3:10  warning  'useState' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\features\projects\components\project-list.tsx
+  11:6   warning  'Project' is defined but never used       @typescript-eslint/no-unused-vars
+  16:15  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\kanban-board.tsx
+   19:5   warning  'SortableContext' is defined but never used              @typescript-eslint/no-unused-vars
+   21:5   warning  'verticalListSortingStrategy' is defined but never used  @typescript-eslint/no-unused-vars
+   30:19  error    Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+   42:50  error    Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+   99:55  error    Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  111:15  warning  'overId' is assigned a value but never used              @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\kanban-card.tsx
+  13:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\kanban-column.tsx
+  11:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\task-detail-view.tsx
+  19:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\task-list.tsx
+  125:14  error  Parsing error: ')' expected
+
+C:\MERN\mvp-pm-tool\src\features\tasks\components\task-metadata-sidebar.tsx
+  15:10  warning  'Badge' is defined but never used         @typescript-eslint/no-unused-vars
+  16:34  warning  'FlagIcon' is defined but never used      @typescript-eslint/no-unused-vars
+  16:44  warning  'LayersIcon' is defined but never used    @typescript-eslint/no-unused-vars
+  20:11  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:14  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:49  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\MERN\mvp-pm-tool\src\lib\supabase\middleware.ts
+  18:58  warning  'options' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\MERN\mvp-pm-tool\src\lib\supabase\server.ts
+  1:35  warning  'CookieOptions' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 55 problems (33 errors, 22 warnings)
+
