@@ -5,6 +5,8 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createOrganizationSchema, CreateOrganizationFormData, inviteMemberSchema, InviteMemberFormData, updateMemberRoleSchema, UpdateMemberRoleFormData } from './schemas';
 import { logActivity } from '@/lib/utils/activity-logger';
+import { createNotification } from '@/lib/utils/notifications';
+import { sendInvitationEmail } from '@/lib/utils/email';
 import { getMemberByUserId } from './queries';
 
 export async function createOrganizationAction(data: CreateOrganizationFormData) {
@@ -54,6 +56,7 @@ export async function createOrganizationAction(data: CreateOrganizationFormData)
 }
 
 export async function inviteMemberAction(orgId: string, data: InviteMemberFormData) {
+    console.log('>>> inviteMemberAction CALLED', { orgId, data });
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: 'Unauthorized' };
@@ -66,59 +69,110 @@ export async function inviteMemberAction(orgId: string, data: InviteMemberFormDa
     const validated = inviteMemberSchema.safeParse(data);
     if (!validated.success) return { error: 'Invalid input' };
 
-    // Find the user by email using Admin Client
-    const adminSupabase = await createAdminClient();
-    const { data: { users }, error: searchError } = await adminSupabase.auth.admin.listUsers();
+    const email = validated.data.email.toLowerCase();
 
-    let profileId: string | undefined;
-
-    if (!searchError && users) {
-        const foundUser = users.find(u => u.email === validated.data.email);
-        if (foundUser) {
-            profileId = foundUser.id;
-        }
-    }
-
-    if (!profileId) {
-        // Fallback to checking profiles table
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('id')
-            .eq('email', validated.data.email)
-            .single();
-            
-        if (!profile) {
-            return { error: 'User not found. They must sign up first in this MVP.' };
-        }
+    // 1. Check if user already exists in profiles
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', email)
+        .single();
         
-        profileId = profile.id;
-    }
+    if (profile) {
+        // User exists, add directly to organization_members
+        const { error: memberError } = await supabase
+            .from('organization_members')
+            .insert({
+                organization_id: orgId,
+                user_id: profile.id,
+                role: validated.data.role,
+                status: 'active',
+            });
 
-    const { error: memberError } = await supabase
-        .from('organization_members')
-        .insert({
-            organization_id: orgId,
-            user_id: profileId,
-            role: validated.data.role,
-            status: 'active',
+        if (memberError) {
+            if (memberError.code === '23505') return { error: 'User is already a member' };
+            return { error: memberError.message };
+        }
+
+        // Fetch organization name for the notification
+        const { data: org } = await supabase
+            .from('organizations')
+            .select('name')
+            .eq('id', orgId)
+            .single();
+
+        await createNotification(supabase, {
+            organizationId: orgId,
+            userId: profile.id,
+            type: 'team_invite',
+            title: 'You were added to a team',
+            body: `You have been added to ${org?.name || 'an organization'} as a ${validated.data.role}.`,
+            entityType: 'organization',
+            entityId: orgId,
         });
 
-    if (memberError) {
-        if (memberError.code === '23505') return { error: 'User is already a member' };
-        return { error: memberError.message };
+        // Send confirmation email
+        await sendInvitationEmail(email, org?.name || 'an organization', validated.data.role);
+
+        await logActivity(supabase, {
+            organizationId: orgId,
+            actorId: user.id,
+            entityType: 'organization',
+            entityId: orgId,
+            action: 'member_added',
+            metadata: { invited_user_id: profile.id, email, role: validated.data.role },
+        });
+
+        revalidatePath('/team');
+        return { success: true, message: 'Member added successfully' };
     }
+
+    // 2. User does not exist, create or update a pending invitation (allow "resending")
+    // Note: We use delete then insert instead of upsert to avoid missing UPDATE RLS policy issues
+    console.log('>>> DELETING EXISTING INVITE FOR', email);
+    const deleteRes = await supabase
+        .from('invitations')
+        .delete()
+        .eq('organization_id', orgId)
+        .eq('email', email);
+    
+    console.log('>>> DELETE RESULT', deleteRes);
+
+    const { error: inviteError } = await supabase
+        .from('invitations')
+        .insert({
+            organization_id: orgId,
+            inviter_id: user.id,
+            email: email,
+            role: validated.data.role,
+        });
+
+    if (inviteError) {
+        console.error('>>> INVITE ERROR', inviteError);
+        return { error: inviteError.message };
+    }
+
+    // Fetch organization name for the email
+    const { data: org } = await supabase
+        .from('organizations')
+        .select('name')
+        .eq('id', orgId)
+        .single();
+
+    // Send invitation email
+    await sendInvitationEmail(email, org?.name || 'an organization', validated.data.role);
 
     await logActivity(supabase, {
         organizationId: orgId,
         actorId: user.id,
         entityType: 'organization',
         entityId: orgId,
-        action: 'member_added',
-        metadata: { invited_user_id: profileId, role: validated.data.role },
+        action: 'member_invited',
+        metadata: { email, role: validated.data.role },
     });
 
     revalidatePath('/team');
-    return { success: true };
+    return { success: true, message: `Invitation sent to ${email}. they will join once they sign up.` };
 }
 
 export async function updateMemberRoleAction(orgId: string, data: UpdateMemberRoleFormData) {

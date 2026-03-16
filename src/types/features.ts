@@ -27,9 +27,11 @@ export type ActivityWithActor = ActivityLog & {
 
 export type NotificationWithDetails = Notification;
 
-export type MemberWithProfile = OrganizationMember & {
+export type MemberWithProfile = {
+    id: string;
+    user_id: string;
     profiles: Pick<Profile, 'id' | 'full_name' | 'avatar_url'> | null;
-};
+} & Partial<Omit<OrganizationMember, 'id' | 'user_id'>>;
 
 export type ProjectWithMemberCount = Project & {
     project_members?: { id: string }[];

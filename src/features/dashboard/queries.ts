@@ -1,3 +1,4 @@
+import { ActivityWithActor, TaskWithAssignee } from '@/types/features';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '@/types/database.types';
 
@@ -14,13 +15,13 @@ export async function getDashboardStats(supabase: SupabaseClient<Database>, orga
 
     const totalProjects = projects?.length || 0;
     const activeProjects = projects?.filter(p => p.status === 'active').length || 0;
-    
+
     const totalTasks = tasks?.length || 0;
     const completedTasks = tasks?.filter(t => t.status === 'done').length || 0;
     const openTasks = totalTasks - completedTasks;
-    
+
     const urgentTasks = tasks?.filter(t => t.priority === 'urgent' && t.status !== 'done').length || 0;
-    
+
     return {
         totalProjects,
         activeProjects,
@@ -57,7 +58,7 @@ export async function getUpcomingTasks(supabase: SupabaseClient<Database>, organ
         .limit(5);
 
     if (error) throw error;
-    return data;
+    return data as unknown as TaskWithAssignee[];
 }
 
 export async function getOrganizationActivity(supabase: SupabaseClient<Database>, organizationId: string) {
@@ -72,5 +73,5 @@ export async function getOrganizationActivity(supabase: SupabaseClient<Database>
         .limit(10);
 
     if (error) throw error;
-    return data;
+    return data as unknown as ActivityWithActor[];
 }

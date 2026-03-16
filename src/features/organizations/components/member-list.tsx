@@ -89,12 +89,12 @@ export function MemberList({ organizationId, members, currentUserId, currentUser
                                                 <span className="ml-2 text-xs text-slate-400 font-normal">(You)</span>
                                             )}
                                         </p>
-                                        <Badge variant="outline" className={`${roleColors[member.role]} capitalize border px-2 py-0 h-5`}>
-                                            {member.role}
+                                        <Badge variant="outline" className={`${roleColors[member.role || 'member']} capitalize border px-2 py-0 h-5`}>
+                                            {member.role || 'member'}
                                         </Badge>
                                     </div>
                                     <p className="text-xs text-slate-500">
-                                        Joined {format(new Date(member.created_at), 'MMM d, yyyy')}
+                                        Joined {format(new Date(member.created_at || new Date()), 'MMM d, yyyy')}
                                     </p>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@ export function MemberList({ organizationId, members, currentUserId, currentUser
                                             </DropdownMenuSubTrigger>
                                             <DropdownMenuSubContent className="w-40">
                                                 <DropdownMenuRadioGroup 
-                                                    value={member.role}
+                                                    value={member.role || 'member'}
                                                     onValueChange={(val) => handleRoleChange(member.id, val as UserRole)}
                                                 >
                                                     <DropdownMenuRadioItem value="admin">Admin</DropdownMenuRadioItem>

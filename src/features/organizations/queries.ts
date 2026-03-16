@@ -26,3 +26,14 @@ export async function getMemberByUserId(supabase: SupabaseClient<Database>, orga
     if (error && error.code !== 'PGRST116') throw error;
     return data;
 }
+
+export async function getPendingInvitations(supabase: SupabaseClient<Database>, email: string) {
+    const { data, error } = await supabase
+        // @ts-ignore - invitations table added in migration
+        .from('invitations')
+        .select('*')
+        .eq('email', email.toLowerCase());
+
+    if (error) throw error;
+    return data;
+}

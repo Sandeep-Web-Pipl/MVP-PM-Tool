@@ -1,5 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '@/types/database.types';
+import { ActivityWithActor } from '@/types/features';
 
 export async function getProjectActivity(supabase: SupabaseClient<Database>, projectId: string) {
     const { data, error } = await supabase
@@ -13,7 +14,7 @@ export async function getProjectActivity(supabase: SupabaseClient<Database>, pro
         .limit(50);
 
     if (error) throw error;
-    return data;
+    return data as unknown as ActivityWithActor[];
 }
 
 export async function getTaskActivity(supabase: SupabaseClient<Database>, taskId: string) {
@@ -27,5 +28,5 @@ export async function getTaskActivity(supabase: SupabaseClient<Database>, taskId
         .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data;
+    return data as unknown as ActivityWithActor[];
 }

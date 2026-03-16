@@ -125,6 +125,48 @@ export function InviteMemberDialog({ organizationId }: InviteMemberDialogProps) 
                             )}
                         />
 
+                        <div className="flex flex-col gap-2 pt-2 border-t mt-4">
+                            <p className="text-xs text-muted-foreground">
+                                No email server attached yet? Copy the signup link to share manually:
+                            </p>
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                size="sm"
+                                className="w-full gap-2 transition-all"
+                                onClick={async (e) => {
+                                    const signupUrl = `${window.location.origin}/signup`;
+                                    const btn = e.currentTarget;
+                                    const originalText = btn.innerHTML;
+                                    
+                                    try {
+                                        if (navigator.clipboard && window.isSecureContext) {
+                                            await navigator.clipboard.writeText(signupUrl);
+                                        } else {
+                                            // Fallback for non-secure or older browsers
+                                            const textArea = document.createElement("textarea");
+                                            textArea.value = signupUrl;
+                                            document.body.appendChild(textArea);
+                                            textArea.select();
+                                            document.execCommand("copy");
+                                            document.body.removeChild(textArea);
+                                        }
+                                        
+                                        toast.success('Signup link copied!');
+                                        btn.innerHTML = 'Copied!';
+                                        setTimeout(() => {
+                                            btn.innerHTML = originalText;
+                                        }, 2000);
+                                    } catch (err) {
+                                        toast.error('Failed to copy link. Please copy it manually.');
+                                    }
+                                }}
+                            >
+                                <UserPlus className="h-4 w-4" />
+                                Copy Signup Link
+                            </Button>
+                        </div>
+
                         <DialogFooter className="pt-4">
                             <Button
                                 type="button"
