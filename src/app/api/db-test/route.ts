@@ -28,6 +28,7 @@ export async function GET() {
             }
         });
     } catch (err: any) {
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+        console.error('DB Test Error:', err);
+        return NextResponse.json({ success: false, error: err.message, stack: err.stack }, { status: 500 });
     }
 }

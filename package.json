@@ -46,3 +46,13 @@
     "typescript": "^5"
   }
 }
+
+{
+  "name": "your-app""dependencies": { ...
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "msw"
+    ]
+  }
+}
