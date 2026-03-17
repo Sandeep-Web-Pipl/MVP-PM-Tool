@@ -1,7 +1,8 @@
 import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
+    console.log('Proxy connecting to Supabase:', process.env.NEXT_PUBLIC_SUPABASE_URL?.split('.')[0] + '...');
     return await updateSession(request)
 }
 
