@@ -39,7 +39,9 @@ export async function updateSession(request: NextRequest) {
         request.nextUrl.pathname.startsWith('/signup') ||
         request.nextUrl.pathname.startsWith('/forgot-password')
 
-    const isPublicRoute = request.nextUrl.pathname === '/' || isAuthRoute
+    const isPublicRoute = request.nextUrl.pathname === '/' || 
+        request.nextUrl.pathname.startsWith('/api/db-test') ||
+        isAuthRoute
 
     if (
         !user &&
