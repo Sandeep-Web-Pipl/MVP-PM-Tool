@@ -11,6 +11,7 @@ import { getMemberByUserId } from './queries';
 
 export async function createOrganizationAction(data: CreateOrganizationFormData) {
     const supabase = await createClient();
+    const adminSupabase = await createAdminClient();
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { error: 'Unauthorized' };
@@ -20,8 +21,8 @@ export async function createOrganizationAction(data: CreateOrganizationFormData)
         return { error: 'Invalid input' };
     }
 
-    // 1. Create the organization
-    const { data: org, error: orgError } = await supabase
+    // 1. Create the organization (using admin to bypass RLS during creation)
+    const { data: org, error: orgError } = await adminSupabase
         .from('organizations')
         .insert({
             name: validated.data.name,
@@ -37,8 +38,8 @@ export async function createOrganizationAction(data: CreateOrganizationFormData)
         return { error: orgError.message };
     }
 
-    // 2. Create the organization membership (Owner)
-    const { error: memberError } = await supabase
+    // 2. Create the organization membership (Owner) (using admin to bypass RLS)
+    const { error: memberError } = await adminSupabase
         .from('organization_members')
         .insert({
             organization_id: org.id,

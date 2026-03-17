@@ -38,7 +38,7 @@ export default async function ProjectsPage() {
                 <EmptyState 
                     title="No projects found"
                     description="Get started by creating your first project for the team."
-                    icon={FolderKanban}
+                    icon={<FolderKanban className="h-8 w-8 text-slate-400" />}
                     actionLabel="Create Project"
                     actionHref="/projects/new"
                 />

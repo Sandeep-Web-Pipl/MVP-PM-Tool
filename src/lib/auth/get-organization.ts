@@ -26,7 +26,7 @@ export async function getCurrentOrganization(supabase: SupabaseClient<Database>)
         .eq('user_id', user.id)
         .eq('status', 'active')
         .limit(1)
-        .single();
+        .maybeSingle();
 
     if (error || !membership) {
         // If no membership, check for pending invitations
@@ -36,7 +36,7 @@ export async function getCurrentOrganization(supabase: SupabaseClient<Database>)
             .select('*')
             .eq('email', user.email)
             .limit(1)
-            .single();
+            .maybeSingle();
 
         if (invitation) {
             // Auto-join: Create membership
@@ -58,13 +58,13 @@ export async function getCurrentOrganization(supabase: SupabaseClient<Database>)
                         slug
                     )
                 `)
-                .single();
+                .maybeSingle();
 
             if (!joinError && newMember) {
                 // Delete the invitation
                 // @ts-ignore - invitations table added in migration
                 await supabase.from('invitations').delete().eq('id', invitation.id);
-                
+
                 return {
                     membership: {
                         role: newMember.role,

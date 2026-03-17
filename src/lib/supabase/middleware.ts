@@ -27,13 +27,16 @@ export async function updateSession(request: NextRequest) {
         }
     )
 
-    // IMPORTANT: Avoid writing any logic between createServerClient and
-    // supabase.auth.getUser(). A simple mistake could make it very hard to debug
-    // issues with users being randomly logged out.
-
     const {
         data: { user },
+        error,  // ← added
     } = await supabase.auth.getUser()
+
+    // ← Temporary debug logs - remove after fixing
+    console.log('SUPABASE URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('SUPABASE KEY exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+    console.log('AUTH ERROR:', error?.code, error?.message)
+    console.log('USER:', user)
 
     const isAuthRoute = request.nextUrl.pathname.startsWith('/login') ||
         request.nextUrl.pathname.startsWith('/signup') ||
@@ -41,35 +44,17 @@ export async function updateSession(request: NextRequest) {
 
     const isPublicRoute = request.nextUrl.pathname === '/' || isAuthRoute
 
-    if (
-        !user &&
-        !isPublicRoute
-    ) {
-        // no user, potentially respond by redirecting the user to the login page
+    if (!user && !isPublicRoute) {
         const url = request.nextUrl.clone()
         url.pathname = '/login'
         return NextResponse.redirect(url)
     }
 
     if (user && isAuthRoute) {
-        // user is already logged in, redirect them to dashboard
         const url = request.nextUrl.clone()
         url.pathname = '/dashboard'
         return NextResponse.redirect(url)
     }
-
-    // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
-    // creating a new response object with NextResponse.next() make sure to:
-    // 1. Pass the request in it, like so:
-    //    const myNewResponse = NextResponse.next({ request })
-    // 2. Copy over the cookies, like so:
-    //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-    // 3. Change the myNewResponse object to fit your needs, but avoid changing
-    //    the cookies!
-    // 4. Finally:
-    //    return myNewResponse
-    // If this is not done, you may be causing the browser and server to go out
-    // of sync and terminate the user's session prematurely!
 
     return supabaseResponse
 }

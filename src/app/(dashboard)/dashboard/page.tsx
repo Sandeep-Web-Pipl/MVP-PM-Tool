@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentOrganization } from '@/lib/auth/get-organization';
-import { 
-    getDashboardStats, 
-    getUpcomingTasks, 
-    getOrganizationActivity 
+import {
+    getDashboardStats,
+    getUpcomingTasks,
+    getOrganizationActivity
 } from '@/features/dashboard/queries';
 import { StatsOverview } from '@/features/dashboard/components/stats-overview';
 import { UpcomingTasks } from '@/features/dashboard/components/upcoming-tasks';
@@ -39,7 +39,7 @@ export default async function DashboardPage() {
 
             <div className="grid gap-8 grid-cols-1 xl:grid-cols-3">
                 <div className="xl:col-span-2 space-y-8">
-                    <DistributionCharts 
+                    <DistributionCharts
                         statusDistribution={stats.taskStatusDistribution}
                         priorityDistribution={stats.taskPriorityDistribution}
                         totalTasks={stats.totalTasks}
@@ -48,7 +48,7 @@ export default async function DashboardPage() {
                 </div>
                 <div className="space-y-8 text-neutral-900 leading-none text-base">
                     <UpcomingTasks tasks={upcomingTasks} />
-                    
+
                     {/* Placeholder for Quick Actions or Team workload */}
                     <div className="bg-primary/5 rounded-2xl p-6 border border-primary/10">
                         <h3 className="font-bold text-sm uppercase tracking-wider text-primary mb-4">Quick Insights</h3>

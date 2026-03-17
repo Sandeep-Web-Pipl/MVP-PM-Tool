@@ -7,7 +7,7 @@ import Link from 'next/link';
 interface EmptyStateProps {
     title: string;
     description: string;
-    icon: LucideIcon;
+    icon: React.ReactNode;
     actionLabel?: string;
     onAction?: () => void;
     actionHref?: string;
@@ -16,7 +16,7 @@ interface EmptyStateProps {
 export function EmptyState({
     title,
     description,
-    icon: Icon,
+    icon,
     actionLabel,
     onAction,
     actionHref,
@@ -33,7 +33,7 @@ export function EmptyState({
     return (
         <div className="flex flex-col items-center justify-center p-8 text-center bg-white/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-slate-200 min-h-[300px] animate-in fade-in zoom-in duration-300">
             <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                <Icon className="h-8 w-8 text-slate-400" />
+                {icon}
             </div>
             <h3 className="text-xl font-semibold text-slate-900 mb-2">{title}</h3>
             <p className="text-slate-500 max-w-sm mb-6">{description}</p>
