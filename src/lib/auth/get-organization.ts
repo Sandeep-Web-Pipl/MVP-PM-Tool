@@ -1,11 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '@/types/database.types';
 
-/**
- * Gets the current organization for the authenticated user.
- * In a real-world app, this might be stored in a cookie or session,
- * but for this MVP, we fetch the first active organization membership.
- */
 export async function getCurrentOrganization(supabase: SupabaseClient<Database>) {
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -14,22 +9,21 @@ export async function getCurrentOrganization(supabase: SupabaseClient<Database>)
     const { data: membership, error } = await supabase
         .from('organization_members')
         .select(`
-      organization_id,
-      role,
-      status,
-      organizations (
-        id,
-        name,
-        slug
-      )
-    `)
+            organization_id,
+            role,
+            status,
+            organizations (
+                id,
+                name,
+                slug
+            )
+        `)
         .eq('user_id', user.id)
         .eq('status', 'active')
         .limit(1)
         .maybeSingle();
 
     if (error || !membership) {
-        // If no membership, check for pending invitations
         // @ts-ignore - invitations table added in migration
         const { data: invitation } = await supabase
             .from('invitations')
@@ -39,7 +33,6 @@ export async function getCurrentOrganization(supabase: SupabaseClient<Database>)
             .maybeSingle();
 
         if (invitation) {
-            // Auto-join: Create membership
             const { data: newMember, error: joinError } = await supabase
                 .from('organization_members')
                 .insert({
@@ -61,7 +54,13 @@ export async function getCurrentOrganization(supabase: SupabaseClient<Database>)
                 .maybeSingle();
 
             if (!joinError && newMember) {
-                // Delete the invitation
+                // ✅ FIX: safely extract organization from array or object
+                const org = Array.isArray(newMember.organizations)
+                    ? newMember.organizations[0]
+                    : newMember.organizations;
+
+                if (!org) return null;
+
                 // @ts-ignore - invitations table added in migration
                 await supabase.from('invitations').delete().eq('id', invitation.id);
 
@@ -70,7 +69,11 @@ export async function getCurrentOrganization(supabase: SupabaseClient<Database>)
                         role: newMember.role,
                         status: newMember.status,
                     },
-                    organization: newMember.organizations,
+                    organization: {
+                        id: String(org.id),
+                        name: String(org.name),
+                        slug: String(org.slug),
+                    },
                     user
                 };
             }
@@ -78,12 +81,23 @@ export async function getCurrentOrganization(supabase: SupabaseClient<Database>)
         return null;
     }
 
+    // ✅ FIX: safely extract organization from array or object
+    const org = Array.isArray(membership.organizations)
+        ? membership.organizations[0]
+        : membership.organizations;
+
+    if (!org) return null;
+
     return {
         membership: {
             role: membership.role,
             status: membership.status,
         },
-        organization: membership.organizations,
+        organization: {
+            id: String(org.id),
+            name: String(org.name),
+            slug: String(org.slug),
+        },
         user
     };
 }
