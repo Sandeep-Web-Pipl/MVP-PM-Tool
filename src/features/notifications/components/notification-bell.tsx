@@ -8,7 +8,6 @@ import {
     FileText,
     AlertCircle,
     CheckCheck,
-    MoreHorizontal
 } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
@@ -23,21 +22,17 @@ import { markNotificationAsReadAction, markAllAsReadAction } from '../actions';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
-import { Notification } from '@/types/features';
+// ✅ Use NotificationWithDetails — matches what layout.tsx passes in
+import { NotificationWithDetails } from '@/types/features';
 
 interface NotificationBellProps {
-    initialNotifications: Notification[];
+    initialNotifications: NotificationWithDetails[];
 }
 
 export function NotificationBell({ initialNotifications }: NotificationBellProps) {
-    const [notifications, setNotifications] = useState(initialNotifications);
+    // ✅ Safe fallback — if null/undefined comes in, default to empty array
+    const [notifications, setNotifications] = useState(initialNotifications ?? []);
     const [isPending, startTransition] = useTransition();
 
     const unreadCount = notifications.filter(n => !n.is_read).length;
@@ -46,7 +41,9 @@ export function NotificationBell({ initialNotifications }: NotificationBellProps
         startTransition(async () => {
             const result = await markNotificationAsReadAction(id);
             if (result.success) {
-                setNotifications(notifications.map(n => n.id === id ? { ...n, is_read: true } : n));
+                setNotifications(prev =>
+                    prev.map(n => n.id === id ? { ...n, is_read: true } : n)
+                );
             }
         });
     };
@@ -55,7 +52,7 @@ export function NotificationBell({ initialNotifications }: NotificationBellProps
         startTransition(async () => {
             const result = await markAllAsReadAction();
             if (result.success) {
-                setNotifications(notifications.map(n => ({ ...n, is_read: true })));
+                setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
                 toast.success('All notifications marked as read');
             }
         });
@@ -67,6 +64,16 @@ export function NotificationBell({ initialNotifications }: NotificationBellProps
             case 'task': return <FileText className="h-4 w-4 text-purple-500" />;
             case 'urgent': return <AlertCircle className="h-4 w-4 text-red-500" />;
             default: return <Bell className="h-4 w-4 text-gray-500" />;
+        }
+    };
+
+    // ✅ Safe date formatter — never crashes even if date is null/invalid
+    const safeFormatDate = (dateValue: string | null | undefined): string => {
+        if (!dateValue) return '';
+        try {
+            return formatDistanceToNow(new Date(dateValue), { addSuffix: true });
+        } catch {
+            return '';
         }
     };
 
@@ -116,7 +123,8 @@ export function NotificationBell({ initialNotifications }: NotificationBellProps
                                     <div className="flex-1 space-y-1 overflow-hidden">
                                         <div className="flex items-start justify-between gap-2">
                                             <p className={cn("text-xs leading-relaxed", !n.is_read ? "font-bold text-neutral-900" : "text-neutral-600 font-medium")}>
-                                                {n.title}
+                                                {/* ✅ Safe string rendering */}
+                                                {String(n.title ?? '')}
                                             </p>
                                             {!n.is_read && (
                                                 <Button
@@ -130,10 +138,12 @@ export function NotificationBell({ initialNotifications }: NotificationBellProps
                                             )}
                                         </div>
                                         <p className="text-xs text-muted-foreground line-clamp-2 leading-normal">
-                                            {n.body}
+                                            {/* ✅ Safe string rendering */}
+                                            {String(n.body ?? '')}
                                         </p>
                                         <p className="text-[10px] text-muted-foreground font-medium">
-                                            {formatDistanceToNow(new Date(n.created_at), { addSuffix: true })}
+                                            {/* ✅ Safe date formatting with error boundary */}
+                                            {safeFormatDate(n.created_at)}
                                         </p>
                                     </div>
                                 </div>
