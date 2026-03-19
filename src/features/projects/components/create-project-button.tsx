@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { useRole } from '@/features/auth/hooks/useRole'
-import { CreateProjectButton } from '@/features/projects/components/create-project-button';
 
 interface CreateProjectButtonProps {
     organizationId: string
@@ -17,6 +16,11 @@ export function CreateProjectButton({ organizationId }: CreateProjectButtonProps
     if (!canManageProjects) return null
 
     return (
-        <CreateProjectButton organizationId={context.organization.id} />
+        <Link href="/projects/new">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-100">
+                <Plus className="mr-2 h-4 w-4" />
+                New Project
+            </Button>
+        </Link>
     )
 }
