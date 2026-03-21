@@ -12,7 +12,7 @@ interface SendEmailParams {
 export async function sendEmail({ to, subject, text, html }: SendEmailParams) {
     try {
         const { data, error } = await resend.emails.send({
-            from: 'PM Tool <onboarding@resend.dev>',
+            from: 'PM Tool <team@webpipl.com>',
             to,
             subject,
             text,
