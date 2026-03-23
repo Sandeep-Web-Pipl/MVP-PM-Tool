@@ -53,12 +53,12 @@ export function InviteMemberDialog({ organizationId }: InviteMemberDialogProps) 
     async function onSubmit(data: InviteMemberFormData) {
         startTransition(async () => {
             const result = await inviteMemberAction(organizationId, data);
-            
+
             if (result.error) {
                 toast.error(result.error);
                 return;
             }
-            
+
             toast.success('Member invited successfully');
             setIsOpen(false);
             form.reset();
@@ -67,14 +67,10 @@ export function InviteMemberDialog({ organizationId }: InviteMemberDialogProps) 
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger
-                render={
-                    <Button className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200 gap-2">
-                        <UserPlus className="h-4 w-4" />
-                        Invite Member
-                    </Button>
-                }
-            />
+            <DialogTrigger className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-colors">
+                <UserPlus className="h-4 w-4" />
+                Invite Member
+            </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Invite Team Member</DialogTitle>
@@ -105,8 +101,8 @@ export function InviteMemberDialog({ organizationId }: InviteMemberDialogProps) 
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Role</FormLabel>
-                                    <Select 
-                                        onValueChange={field.onChange} 
+                                    <Select
+                                        onValueChange={field.onChange}
                                         value={field.value}
                                     >
                                         <FormControl>
@@ -138,7 +134,7 @@ export function InviteMemberDialog({ organizationId }: InviteMemberDialogProps) 
                                     const signupUrl = `${window.location.origin}/signup`;
                                     const btn = e.currentTarget;
                                     const originalText = btn.innerHTML;
-                                    
+
                                     try {
                                         if (navigator.clipboard && window.isSecureContext) {
                                             await navigator.clipboard.writeText(signupUrl);
@@ -151,7 +147,7 @@ export function InviteMemberDialog({ organizationId }: InviteMemberDialogProps) 
                                             document.execCommand("copy");
                                             document.body.removeChild(textArea);
                                         }
-                                        
+
                                         toast.success('Signup link copied!');
                                         btn.innerHTML = 'Copied!';
                                         setTimeout(() => {
@@ -176,8 +172,8 @@ export function InviteMemberDialog({ organizationId }: InviteMemberDialogProps) 
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                type="submit" 
+                            <Button
+                                type="submit"
                                 disabled={isPending}
                                 className="bg-indigo-600 hover:bg-indigo-700"
                             >
