@@ -1,10 +1,10 @@
 'use client';
 
-import { 
-    BriefcaseIcon, 
-    CheckCircleIcon, 
-    ClockIcon, 
-    AlertTriangleIcon 
+import {
+    BriefcaseIcon,
+    CheckCircleIcon,
+    ClockIcon,
+    AlertTriangleIcon
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -58,7 +58,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {cards.map((card) => (
-                <Card key={card.title} className="hover:shadow-md transition-shadow">
+                <Card key={card.title} className="hover:shadow-[0_4px_20px_rgba(196,67,183,0.4)] transition-shadow">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                         <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
                         <div className={`p-2 rounded-lg ${card.bg} ${card.color}`}>
