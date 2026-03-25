@@ -44,20 +44,20 @@ export default async function ProjectsPage() {
                         <Link
                             key={project.id}
                             href={`/projects/${project.id}`}
-                            className="group block rounded-lg border bg-card p-6 transition-all hover:shadow-md hover:bg-[#c443b7] hover:text-white"
+                            className="group block rounded-lg border bg-card p-6 transition-all hover:shadow-md"
                         >
                             <div className="flex items-start justify-between">
                                 <Badge variant={project.status === 'active' ? 'default' : 'secondary'}>
                                     {project.status.toUpperCase()}
                                 </Badge>
                             </div>
-                            <h3 className="mt-4 text-xl font-bold group-hover:text-white">
+                            <h3 className="mt-4 text-xl font-bold group-hover:text-primary">
                                 {project.name}
                             </h3>
-                            <p className="mt-2 text-sm text-muted-foreground line-clamp-2 group-hover:text-white">
+                            <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
                                 {project.description || 'No description provided.'}
                             </p>
-                            <div className="mt-6 flex items-center justify-between text-xs text-muted-foreground group-hover:text-white">
+                            <div className="mt-6 flex items-center justify-between text-xs text-muted-foreground">
                                 <div className="flex items-center">
                                     <Calendar className="mr-1 h-3 w-3" />
                                     {project.start_date ? format(new Date(project.start_date), 'MMM d, yyyy') : 'No date'}
