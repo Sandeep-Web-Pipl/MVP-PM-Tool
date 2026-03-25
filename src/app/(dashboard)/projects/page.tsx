@@ -44,7 +44,7 @@ export default async function ProjectsPage() {
                         <Link
                             key={project.id}
                             href={`/projects/${project.id}`}
-                            className="group block rounded-lg border bg-card p-6 transition-all hover:shadow-md"
+                            className="group block rounded-lg border bg-card p-6 transition-all hover:shadow-[0_4px_20px_rgba(196,67,183,0.4)]"
                         >
                             <div className="flex items-start justify-between">
                                 <Badge variant={project.status === 'active' ? 'default' : 'secondary'}>
