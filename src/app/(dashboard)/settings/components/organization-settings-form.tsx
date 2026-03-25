@@ -48,9 +48,9 @@ export function OrganizationSettingsForm({ orgId, initialData }: OrganizationSet
             <CardContent className="space-y-4">
                 <div className="grid gap-2">
                     <Label htmlFor="org-name">Organization Name</Label>
-                    <Input 
-                        id="org-name" 
-                        value={name} 
+                    <Input
+                        id="org-name"
+                        value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
                 </div>
@@ -58,17 +58,17 @@ export function OrganizationSettingsForm({ orgId, initialData }: OrganizationSet
                     <Label htmlFor="org-slug">Slug</Label>
                     <div className="flex items-center gap-2">
                         <span className="text-slate-400 text-sm">pm-tool.com/</span>
-                        <Input 
-                            id="org-slug" 
-                            value={slug} 
+                        <Input
+                            id="org-slug"
+                            value={slug}
                             onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))}
                         />
                     </div>
                 </div>
-                <Button 
-                    onClick={handleUpdate} 
+                <Button
+                    onClick={handleUpdate}
                     disabled={isPending || !hasChanges}
-                    className="bg-indigo-600 hover:bg-indigo-700"
+                    className="bg-[#7C3AED] hover:bg-[#6D28D9]"
                 >
                     {isPending ? 'Updating...' : 'Update Organization'}
                 </Button>

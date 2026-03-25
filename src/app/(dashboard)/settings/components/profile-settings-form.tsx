@@ -44,9 +44,9 @@ export function ProfileSettingsForm({ initialData }: ProfileSettingsFormProps) {
             <CardContent className="space-y-4">
                 <div className="grid gap-2">
                     <Label htmlFor="name">Full Name</Label>
-                    <Input 
-                        id="name" 
-                        value={fullName} 
+                    <Input
+                        id="name"
+                        value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         placeholder="Your full name"
                     />
@@ -56,10 +56,10 @@ export function ProfileSettingsForm({ initialData }: ProfileSettingsFormProps) {
                     <Input id="email" value={initialData.email} disabled className="bg-slate-50" />
                     <p className="text-xs text-slate-400">Email cannot be changed here.</p>
                 </div>
-                <Button 
-                    onClick={handleSave} 
+                <Button
+                    onClick={handleSave}
                     disabled={isPending || fullName === initialData.fullName}
-                    className="bg-indigo-600 hover:bg-indigo-700"
+                    className="bg-[#7C3AED] hover:bg-[#6D28D9]"
                 >
                     {isPending ? 'Saving...' : 'Save Changes'}
                 </Button>

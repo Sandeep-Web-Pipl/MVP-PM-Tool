@@ -28,9 +28,9 @@ export default async function DashboardLayout({
     }
 
     return (
-        <div className="flex min-h-screen bg-slate-50/50">
+        <div className="flex h-screen overflow-hidden bg-[oklch(0.99_0.005_300)]">
             <Sidebar className="hidden lg:flex" organization={context.organization} />
-            <div className="flex flex-1 flex-col">
+            <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
                 <Header
                     user={context.user}
                     organization={context.organization}
