@@ -36,7 +36,7 @@ export function Header({ user, organization, notifications }: HeaderProps) {
     }
 
     return (
-        <header className="h-16 border-b border-purple-100 bg-white/80 backdrop-blur-sm flex items-center justify-between px-6 w-full shrink-0">
+        <header className="h-16 border-b border-purple-100 bg-white/90 backdrop-blur-sm flex items-center justify-between px-6 w-full shrink-0 shadow-sm">
             <div className="flex items-center gap-4">
                 <div className="font-semibold text-lg text-neutral-900 tracking-tight">
                     {organization.name}

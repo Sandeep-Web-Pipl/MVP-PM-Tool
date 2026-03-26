@@ -36,7 +36,7 @@ export default async function DashboardLayout({
                     organization={context.organization}
                     notifications={notifications}
                 />
-                <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+                <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 bg-[oklch(0.99_0.005_300)]">
                     {children}
                 </main>
             </div>
